@@ -25,5 +25,5 @@ urlpatterns = [
     path("api/user/", include("user.urls", namespace="user")),
     path('api-auth/', include('rest_framework.urls')),
     path('api/token-auth/', obtain_auth_token, name='api_token_auth'),
-    # path('api/', include('api.urls')),
+    path('api/', include('api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
