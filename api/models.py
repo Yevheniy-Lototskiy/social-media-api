@@ -11,7 +11,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     bio = models.TextField(blank=True)
-    # profile_picture = models.ImageField(upload_to="profile_pictures/", blank=True)
+    profile_picture = models.ImageField(upload_to="profile_pictures/", blank=True)
 
     @property
     def full_name(self):
