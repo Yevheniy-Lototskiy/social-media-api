@@ -30,7 +30,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def get_serializer_class(self):
-        if self.action in ["retrieve", "update"]:
+        if self.action in ["retrieve", "update", "create"]:
             return ProfileDetailSerializer
 
         return self.serializer_class
@@ -59,4 +59,4 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(author=self.request.user)
