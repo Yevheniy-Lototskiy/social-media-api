@@ -23,3 +23,17 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+    def get_queryset(self):
+        username = self.request.query_params.get("username")
+        email = self.request.query_params.get("email")
+
+        queryset = self.queryset
+
+        if username:
+            queryset = queryset.filter(username__icontains=username)
+
+        if email:
+            queryset = queryset.filter(email__icontains=email)
+
+        return queryset
