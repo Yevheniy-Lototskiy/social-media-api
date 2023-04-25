@@ -32,6 +32,25 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         related_name="posts"
     )
+    hashtag = models.CharField(max_length=62, blank=True)
 
     class Meta:
         ordering = ["-created_at"]
+
+    # def save(self, *args, **kwargs):
+    #     if self.hashtag and not self.hashtag.startswith("#"):
+    #         self.hashtag = f"#{self.hashtag}"
+    #
+    #     super().save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        tags = ""
+
+        if self.hashtag:
+            for tag in self.hashtag.split():
+                if not tag.startswith("#"):
+                    tags += f" #{tag}"
+
+        self.hashtag = tags.strip()
+
+        super().save(*args, **kwargs)

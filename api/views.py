@@ -60,3 +60,13 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def get_queryset(self):
+        hashtag = self.request.query_params.get("hashtag")
+
+        queryset = self.queryset
+
+        if hashtag:
+            queryset = queryset.filter(hashtag__icontains=hashtag)
+
+        return queryset
