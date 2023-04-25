@@ -16,3 +16,22 @@ class Profile(models.Model):
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class Post(models.Model):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="posts"
+    )
+    content = models.TextField()
+    post_picture = models.ImageField(upload_to="post_pictures/", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    profile = models.ForeignKey(
+        "Profile",
+        on_delete=models.CASCADE,
+        related_name="posts"
+    )
+
+    class Meta:
+        ordering = ["-created_at"]

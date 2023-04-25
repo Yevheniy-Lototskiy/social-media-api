@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from api.models import Profile
-from api.serializers import ProfileSerializer, ProfileDetailSerializer
+from api.models import Profile, Post
+from api.serializers import ProfileSerializer, ProfileDetailSerializer, PostSerializer
 from user.models import User
 from user.serializers import UserSerializer
 
@@ -52,3 +52,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(last_name__icontains=last_name)
 
         return queryset
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
