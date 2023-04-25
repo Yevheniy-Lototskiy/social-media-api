@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
 from api.models import Profile
-from api.serializers import ProfileSerializer
+from api.serializers import ProfileSerializer, ProfileDetailSerializer
 from user.models import User
 from user.serializers import UserSerializer
 
@@ -28,3 +28,27 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action in ["retrieve", "update"]:
+            return ProfileDetailSerializer
+
+        return self.serializer_class
+
+    def get_queryset(self):
+        nickname = self.request.query_params.get("nickname")
+        first_name = self.request.query_params.get("first_name")
+        last_name = self.request.query_params.get("last_name")
+
+        queryset = self.queryset
+
+        if nickname:
+            queryset = queryset.filter(nickname__icontains=nickname)
+
+        if first_name:
+            queryset = queryset.filter(first_name__icontains=first_name)
+
+        if last_name:
+            queryset = queryset.filter(last_name__icontains=last_name)
+
+        return queryset
