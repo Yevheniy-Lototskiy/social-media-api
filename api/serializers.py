@@ -34,12 +34,14 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             "id",
+            "author",
             "profile",
             "content",
             "post_picture",
             "created_at",
             "hashtag"
         )
+        read_only_fields = ["author",]
 
 
 class ProfileDetailSerializer(serializers.ModelSerializer):

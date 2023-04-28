@@ -1,7 +1,15 @@
 from rest_framework import viewsets
 
 from api.models import Profile, Post
-from api.serializers import ProfileSerializer, ProfileDetailSerializer, PostSerializer
+from api.permissions import (
+    IsProfileOwnerOrReadOnly,
+    IsAuthorOrReadOnly
+)
+from api.serializers import (
+    ProfileSerializer,
+    ProfileDetailSerializer,
+    PostSerializer
+)
 from user.models import User
 from user.serializers import UserSerializer
 
@@ -25,6 +33,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    permission_classes = [IsProfileOwnerOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -57,6 +66,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = [IsAuthorOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
